@@ -1,0 +1,27 @@
+version: '3'
+services:  
+    flask101:
+        build: .
+        image: flask101
+        container_name: flask101
+        environment: 
+            - TZ=Europe/London
+        env_file:
+            - app.env
+        ports:
+            - 8888:8888
+        networks:
+            - flask101
+        logging:
+            driver: "json-file"
+            options:
+                max-file: ${LOG_EXPIRE}
+                max-size: ${LOG_SEGMENT}
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8888"]
+            interval: 60s
+            timeout: 2s
+            retries: 3
+
+networks: 
+    flask101:
